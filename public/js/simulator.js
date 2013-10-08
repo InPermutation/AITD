@@ -4,9 +4,6 @@ var addBody, removeBody, tick;
 window.onload = function() {
     var bodies = [];
     var nextID = 1;
-    var svg = document.getElementById('field');
-    var svgNS = svg.getAttribute('xmlns');
-
     // public functions
     var frame = 0;
     tick = function() {
@@ -27,7 +24,7 @@ window.onload = function() {
         var id = nextID++;
         bodies.push({
             'body': body,
-            'rect': createRect(body, style),
+            'style': style,
             'id': id
         }) - 1;
         return id;
@@ -37,13 +34,6 @@ window.onload = function() {
     }
     // end public functions
 
-    function createRect(body, style) {
-        var rect = document.createElementNS(svgNS, "rect");
-        rect.setAttribute('style', style);
-        svg.appendChild(rect);
-
-        return rect;
-    }
     function drawFrame() {
         // reset `frame` requestID
         frame = 0;
