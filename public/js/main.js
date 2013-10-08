@@ -7,7 +7,9 @@ window.onload = function() {
         new Point(100, 20), // center
         new Size(30, 40), // size
         10000, // weight
-        new Vector(0, 0), // velocity
+        new Vector(1, 0), // velocity
         new Vector(0, 0) // orientation
     ), 'blue');
+
+    setInterval(tick, 20);
 }

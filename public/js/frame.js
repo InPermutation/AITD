@@ -1,6 +1,6 @@
 "use strict";
 
-var addBody, removeBody, drawFrame;
+var addBody, removeBody, tick;
 window.onload = function() {
     var bodies = [];
     var nextID = 1;
@@ -8,16 +8,20 @@ window.onload = function() {
     var svgNS = svg.getAttribute('xmlns');
 
     // public functions
-    drawFrame = function() {
-        return;// TODO: implement
+    var frame = 0;
+    tick = function() {
+        if(bodies.length === 0) return;
+
         // physics
         for(var ix=0; ix<bodies.length; ix++) {
             var info = bodies[ix];
+            var body = info.body;
+            body.center.x += body.velocity.x;
+            body.center.y += body.velocity.y;
         }
-        // draw
-        for(var ix=0; ix<bodies.length; ix++) {
-            var info = bodies[ix];
-        }
+        if(frame === 0) {
+            frame = window.requestAnimationFrame(drawFrame);
+        } // else { already requested animation frame }
     }
     addBody = function(body, color) {
         var id = nextID++;
@@ -45,4 +49,22 @@ window.onload = function() {
 
         return rect;
     }
-};
+    function updateAttr(rect, attr, val) {
+        if(rect.getAttribute(attr) != val) {
+            rect.setAttribute(attr, val);
+        }
+    }
+    function updateRect(body, rect) {
+        updateAttr(rect, 'x', body.center.x);
+        updateAttr(rect, 'y', body.center.y);
+    }
+    function drawFrame() {
+        // reset `frame` requestID
+        frame = 0;
+        // draw
+        for(var ix=0; ix<bodies.length; ix++) {
+            var info = bodies[ix];
+            updateRect(info.body, info.rect);
+        }
+    }
+ };
