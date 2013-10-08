@@ -40,33 +40,13 @@ window.onload = function() {
     function createRect(body, style) {
         var rect = document.createElementNS(svgNS, "rect");
         rect.setAttribute('style', style);
-        rect.setAttribute('x', body.center.x);
-        rect.setAttribute('y', body.center.y);
-        rect.setAttribute('rx', 4);
-        rect.setAttribute('ry', 4);
-        rect.setAttribute('width', body.size.x);
-        rect.setAttribute('height', body.size.y);
-
         svg.appendChild(rect);
 
         return rect;
     }
-    function updateAttr(rect, attr, val) {
-        if(rect.getAttribute(attr) != val) {
-            rect.setAttribute(attr, val);
-        }
-    }
-    function updateRect(body, rect) {
-        updateAttr(rect, 'x', body.center.x);
-        updateAttr(rect, 'y', body.center.y);
-    }
     function drawFrame() {
         // reset `frame` requestID
         frame = 0;
-        // draw
-        for(var ix=0; ix<bodies.length; ix++) {
-            var info = bodies[ix];
-            updateRect(info.body, info.rect);
-        }
+        scene.draw(bodies);
     }
  };
