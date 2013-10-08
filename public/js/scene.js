@@ -11,10 +11,21 @@ var scene, StaticScene, TruckFollowScene;
         svg = document.getElementById('field');
         svgNS = svg.getAttribute('xmlns');
     }
+    StaticScene.prototype.adjustViewport = function() {
+        //http://stackoverflow.com/a/15459233/3140
+        var e = window, a = 'inner';
+        if (!( 'innerWidth' in window )) {
+            a = 'client';
+            e = document.documentElement || document.body;
+        }
+        updateAttribute(svg, 'width', e[a+'Width']);
+        updateAttribute(svg, 'height', e[a+'Height']);
+    }
     StaticScene.prototype.draw = function(bodies) {
         var scene = this;
         if(!svg) scene.initialize();
 
+        scene.adjustViewport();
         scene.drawGround();
         bodies.forEach(function(body) {
             scene.drawBody(body);
@@ -27,12 +38,12 @@ var scene, StaticScene, TruckFollowScene;
         var rect = obj.rect;
         var body = obj.body;
 
-        rect.setAttribute('x', body.center.x - this.center.x);
-        rect.setAttribute('y', body.center.y - this.center.y);
-        rect.setAttribute('rx', 4);
-        rect.setAttribute('ry', 4);
-        rect.setAttribute('width', body.size.x);
-        rect.setAttribute('height', body.size.y);
+        updateAttribute(rect, 'x', body.center.x - this.center.x);
+        updateAttribute(rect, 'y', body.center.y - this.center.y);
+        updateAttribute(rect, 'rx', 4);
+        updateAttribute(rect, 'ry', 4);
+        updateAttribute(rect, 'width', body.size.x);
+        updateAttribute(rect, 'height', body.size.y);
     }
 
     TruckFollowScene = function (truck) {
@@ -53,5 +64,10 @@ var scene, StaticScene, TruckFollowScene;
         svg.appendChild(rect);
 
         return rect;
+    }
+    function updateAttribute(el, attrName, val) {
+        if(el.getAttribute(attrName) != val) {
+            el.setAttribute(attrName, val);
+        }
     }
 })();
