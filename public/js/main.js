@@ -3,13 +3,17 @@
 var ol = window.onload;
 window.onload = function() {
     ol();
-    addBody(new Body(
+    var body = new Body(
         new Point(100, 20), // center
         new Size(30, 40), // size
         10000, // weight
-        new Vector(1, 0), // velocity
+        new Vector(0, 0), // velocity
         new Vector(0, 0) // orientation
-    ), 'blue');
+    );
+    addBody(body, 'blue');
 
+    setInterval(function() {
+        body.velocity.x += 0.001;
+    }, 10);
     setInterval(tick, 20);
 }
