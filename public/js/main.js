@@ -10,7 +10,7 @@ window.onload = function() {
         new Vector(0, 0), // velocity
         new Vector(0, 0) // orientation
     );
-    addBody(body, 'blue');
+    addBody(body, 'fill:blue;stroke:rgb(0,0,200);stroke-width:2;');
 
     setInterval(function() {
         body.velocity.x += 0.001;

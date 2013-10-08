@@ -23,11 +23,11 @@ window.onload = function() {
             frame = window.requestAnimationFrame(drawFrame);
         } // else { already requested animation frame }
     }
-    addBody = function(body, color) {
+    addBody = function(body, style) {
         var id = nextID++;
         bodies.push({
             'body': body,
-            'rect': createRect(body, color),
+            'rect': createRect(body, style),
             'id': id
         }) - 1;
         return id;
@@ -37,11 +37,13 @@ window.onload = function() {
     }
     // end public functions
 
-    function createRect(body, color) {
+    function createRect(body, style) {
         var rect = document.createElementNS(svgNS, "rect");
-        rect.setAttribute('style', 'fill:'+color);
+        rect.setAttribute('style', style);
         rect.setAttribute('x', body.center.x);
         rect.setAttribute('y', body.center.y);
+        rect.setAttribute('rx', 4);
+        rect.setAttribute('ry', 4);
         rect.setAttribute('width', body.size.x);
         rect.setAttribute('height', body.size.y);
 
