@@ -20,6 +20,9 @@ Vector.prototype.subtract = function(other) {
 Vector.prototype.scale = function(scalar) {
     return new Vector(this.x * scalar, this.y * scalar);
 }
+Vector.prototype.magnitude = function() {
+    return Math.sqrt(this.x*this.x + this.y*this.y);
+}
 
 var Point = Vector; // displacement from Origin
 var Size = Vector; // (width, height)
