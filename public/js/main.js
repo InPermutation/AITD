@@ -4,7 +4,7 @@ var ol = window.onload;
 window.onload = function() {
     ol();
     var tractor = new Body(
-        new Point(0, 0), // center
+        new Point(40, 25), // center
         new Size(60, 40), // size
         10000, // weight
         new Vector(0, 0), // velocity
