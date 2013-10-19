@@ -7,6 +7,9 @@ window.onload = function() {
     // public functions
     var frame = 0;
     tick = function() {
+        if(frame === 0) {
+            frame = window.requestAnimationFrame(drawFrame);
+        } // else { already requested animation frame }
         if(bodies.length === 0) return;
 
         // physics
@@ -15,9 +18,6 @@ window.onload = function() {
             var body = info.body;
             body.center = body.center.add(body.velocity);
         }
-        if(frame === 0) {
-            frame = window.requestAnimationFrame(drawFrame);
-        } // else { already requested animation frame }
     }
     addBody = function(body, style) {
         var id = nextID++;
