@@ -11,6 +11,12 @@ function Vector(x, y) {
     this.y = sane(y);
 }
 Vector.prototype.toString = function() { return "(" + this.x + ", " + this.y + ")"; };
+Vector.prototype.add = function(other) {
+    return new Vector(this.x + other.x, this.y + other.y);
+}
+Vector.prototype.subtract = function(other) {
+    return new Vector(this.x - other.x, this.y - other.y);
+}
 
 var Point = Vector; // displacement from Origin
 var Size = Vector; // (width, height)

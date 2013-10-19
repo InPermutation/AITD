@@ -6,6 +6,7 @@ var scene, StaticScene, TruckFollowScene;
 
     StaticScene = function () {
         this.center = new Point(0, 0);
+        this.viewportCenter = new Point(0, 0);
     }
     StaticScene.prototype.initialize = function() {
         svg = document.getElementById('field');
@@ -18,8 +19,13 @@ var scene, StaticScene, TruckFollowScene;
             a = 'client';
             e = document.documentElement || document.body;
         }
-        updateAttribute(svg, 'width', e[a+'Width']);
-        updateAttribute(svg, 'height', e[a+'Height']);
+        var w = e[a+'Width'];
+        var h = e[a+'Height'];
+
+        updateAttribute(svg, 'width', w);
+        updateAttribute(svg, 'height', h);
+
+        this.viewportCenter = new Point(w/2, h/2);
     }
     StaticScene.prototype.draw = function(bodies) {
         var scene = this;
@@ -33,13 +39,17 @@ var scene, StaticScene, TruckFollowScene;
     }
     StaticScene.prototype.drawGround = function() {
     }
+    StaticScene.prototype.transform = function(point) {
+        return this.viewportCenter.add(point).subtract(this.center);
+    }
     StaticScene.prototype.drawBody = function(obj) {
-        if(!('rect' in obj)) obj.rect = createRect(obj.body, obj.style);
+        if(!('rect' in obj)) obj.rect = createRect(obj.style);
         var rect = obj.rect;
         var body = obj.body;
+        var transformBody = this.transform(body.center);
 
-        updateAttribute(rect, 'x', body.center.x - this.center.x);
-        updateAttribute(rect, 'y', body.center.y - this.center.y);
+        updateAttribute(rect, 'x', transformBody.x);
+        updateAttribute(rect, 'y', transformBody.y);
         updateAttribute(rect, 'rx', 4);
         updateAttribute(rect, 'ry', 4);
         updateAttribute(rect, 'width', body.size.x);
@@ -58,7 +68,7 @@ var scene, StaticScene, TruckFollowScene;
         StaticScene.prototype.draw.call(this, bodies);
     }
 
-    function createRect(body, style) {
+    function createRect(style) {
         var rect = document.createElementNS(svgNS, "rect");
         rect.setAttribute('style', style);
         svg.appendChild(rect);
