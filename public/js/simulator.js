@@ -13,8 +13,7 @@ window.onload = function() {
         for(var ix=0; ix<bodies.length; ix++) {
             var info = bodies[ix];
             var body = info.body;
-            body.center.x += body.velocity.x;
-            body.center.y += body.velocity.y;
+            body.center = body.center.add(body.velocity);
         }
         if(frame === 0) {
             frame = window.requestAnimationFrame(drawFrame);
