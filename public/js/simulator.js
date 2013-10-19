@@ -1,7 +1,8 @@
 "use strict";
 
-var addBody, removeBody, tick;
+var addBody, removeBody, addTractor, removeTractor, tick;
 window.onload = function() {
+    var tractors = [];
     var bodies = [];
     var nextID = 1;
     // public functions
@@ -13,6 +14,12 @@ window.onload = function() {
         if(bodies.length === 0) return;
 
         // physics
+        for(var ix=0; ix<tractors.length; ix++) {
+            var info = tractors[ix];
+            var tractor = info.tractor;
+
+            applyInputs(tractor);
+        }
         for(var ix=0; ix<bodies.length; ix++) {
             var info = bodies[ix];
             var body = info.body;
@@ -28,11 +35,23 @@ window.onload = function() {
             'body': body,
             'style': style,
             'id': id
-        }) - 1;
+        });
         return id;
     }
     removeBody = function(bodyID) {
         bodies = bodies.map(function(item) { return item.id != bodyID; });
+    }
+    addTractor = function(tractor, style) {
+        var id = nextID++;
+        addBody(tractor.body, style);
+        tractors.push({
+            'tractor': tractor,
+            'id': id
+        });
+        return id;
+    }
+    removeTractor = function(tractorID) {
+        tractors = tractors.map(function(item) { return item.id != tractorID; });
     }
     // end public functions
 
@@ -40,6 +59,16 @@ window.onload = function() {
         // reset `frame` requestID
         frame = 0;
         scene.draw(bodies);
+    }
+
+    var engineForce = 500.0; // tune this
+    function applyInputs(tractor) {
+        var gas = tractor.accelerator.getValue();
+        var s_force = gas * engineForce;
+        var direction = new Vector(1, 0);
+        var F = direction.scale(s_force);
+
+        applyForce(F, tractor.body);
     }
 
     // 1D approximation

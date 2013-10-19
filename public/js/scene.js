@@ -1,5 +1,5 @@
 "use strict";
-var scene, StaticScene, TruckFollowScene;
+var scene, StaticScene, BodyFollowScene;
 (function() {
     var svg;
     var svgNS;
@@ -75,14 +75,14 @@ var scene, StaticScene, TruckFollowScene;
         updateAttribute(rect, 'height', body.size.y);
     }
 
-    TruckFollowScene = function (truck) {
+    BodyFollowScene = function (truck) {
         StaticScene.call(this);
         this.truck = truck;
     }
-    TruckFollowScene.prototype = Object.create(StaticScene.prototype);
-    TruckFollowScene.prototype.constructor = TruckFollowScene;
+    BodyFollowScene.prototype = Object.create(StaticScene.prototype);
+    BodyFollowScene.prototype.constructor = BodyFollowScene;
 
-    TruckFollowScene.prototype.draw = function(bodies) {
+    BodyFollowScene.prototype.draw = function(bodies) {
         this.center = this.truck.center;
         StaticScene.prototype.draw.call(this, bodies);
     }
