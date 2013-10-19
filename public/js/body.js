@@ -17,6 +17,9 @@ Vector.prototype.add = function(other) {
 Vector.prototype.subtract = function(other) {
     return new Vector(this.x - other.x, this.y - other.y);
 }
+Vector.prototype.scale = function(scalar) {
+    return new Vector(this.x * scalar, this.y * scalar);
+}
 
 var Point = Vector; // displacement from Origin
 var Size = Vector; // (width, height)

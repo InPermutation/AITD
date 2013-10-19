@@ -43,7 +43,7 @@ var scene, StaticScene, TruckFollowScene;
     }
     StaticScene.prototype.getGroundBody = function() {
         return this.groundBody = this.groundBody || new Body(
-            new Point(0, 0), // center
+            new Point(500, 0), // center
             new Size(1000, 100), // size
             1, // weight
             new Vector(0, 0), // velocity
@@ -54,24 +54,26 @@ var scene, StaticScene, TruckFollowScene;
     StaticScene.prototype.drawGround = function() {
         this.updateRect(this.getGroundRect(), this.getGroundBody());
     }
-    StaticScene.prototype.transform = function(point) {
-        return this.viewportCenter.add(point).subtract(this.center);
+    StaticScene.prototype.screenPtFromBody = function(body) {
+        return this.viewportCenter
+            .add(body.center)
+            .subtract(this.center)
+            .subtract(body.size.scale(1/2));
     }
     StaticScene.prototype.drawBody = function(obj) {
         if(!('rect' in obj)) obj.rect = createRect(obj.style);
         this.updateRect(obj.rect, obj.body);
     }
     StaticScene.prototype.updateRect = function(rect, body) {
-        var transformBody = this.transform(body.center);
+        var screenPt = this.screenPtFromBody(body);
 
-        updateAttribute(rect, 'x', transformBody.x);
-        updateAttribute(rect, 'y', transformBody.y);
+        updateAttribute(rect, 'x', screenPt.x);
+        updateAttribute(rect, 'y', screenPt.y);
         updateAttribute(rect, 'rx', 4);
         updateAttribute(rect, 'ry', 4);
         updateAttribute(rect, 'width', body.size.x);
         updateAttribute(rect, 'height', body.size.y);
     }
-
 
     TruckFollowScene = function (truck) {
         StaticScene.call(this);
