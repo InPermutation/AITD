@@ -37,15 +37,31 @@ var scene, StaticScene, TruckFollowScene;
             scene.drawBody(body);
         });
     }
+
+    StaticScene.prototype.getGroundRect = function() {
+        return this.groundRect = this.groundRect || createRect('fill:black;');
+    }
+    StaticScene.prototype.getGroundBody = function() {
+        return this.groundBody = this.groundBody || new Body(
+            new Point(0, 0), // center
+            new Size(1000, 100), // size
+            1, // weight
+            new Vector(0, 0), // velocity
+            new Vector(0, 0) // orientation
+        );
+    }
+
     StaticScene.prototype.drawGround = function() {
+        this.updateRect(this.getGroundRect(), this.getGroundBody());
     }
     StaticScene.prototype.transform = function(point) {
         return this.viewportCenter.add(point).subtract(this.center);
     }
     StaticScene.prototype.drawBody = function(obj) {
         if(!('rect' in obj)) obj.rect = createRect(obj.style);
-        var rect = obj.rect;
-        var body = obj.body;
+        this.updateRect(obj.rect, obj.body);
+    }
+    StaticScene.prototype.updateRect = function(rect, body) {
         var transformBody = this.transform(body.center);
 
         updateAttribute(rect, 'x', transformBody.x);
@@ -55,6 +71,7 @@ var scene, StaticScene, TruckFollowScene;
         updateAttribute(rect, 'width', body.size.x);
         updateAttribute(rect, 'height', body.size.y);
     }
+
 
     TruckFollowScene = function (truck) {
         StaticScene.call(this);
